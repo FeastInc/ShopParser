@@ -15,9 +15,14 @@ namespace DataParser
             Properties = properties;
         }
 
-        public ProductCategoryObject() { }
+        public ProductCategoryObject()
+        {
+        }
 
-        public ProductCategoryObject(string properties, char delemiter): 
+        public ProductCategoryObject(string properties, char delemiter) : 
+            this(properties.Split(delemiter).ToList())
+        {
+        }
 
     }
 }
