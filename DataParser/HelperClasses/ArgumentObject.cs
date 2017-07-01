@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Net;
 
 namespace DataParser
 {
@@ -14,8 +10,15 @@ namespace DataParser
 
         public ArgumentObject(string url, object[] args = null)
         {
-            Url = url;
+            Url = WebUtility.HtmlDecode(url);
             Args = args?.ToArray();
+        }
+
+        public override string ToString()
+        {
+            return $"URL: {Url}\n" +
+                   $"Arguments: {{{string.Join(", ", Args??new object[0])}}}\n" +
+                   $"{new string('-', 10)}\n";
         }
     }
 }

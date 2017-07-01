@@ -1,37 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using DataParser.HelperClasses;
 using HtmlAgilityPack;
 
 namespace DataParser
 {
     public class LiquiMolyClass
     {
-        private Func<HtmlDocument, bool> IsCategory { get; }
-        private Dictionary<string, Func<HtmlDocument, ArgumentObject, string>> PropertiesProduct { get; }
-        private List<string> PropetiesProductList { get; }
-        private List<string> PropetiesCategoryList { get; }
-        public List<string> PropertiesList { get; }
-        private Dictionary<string, Func<HtmlDocument, ArgumentObject, string>> PropertiesCategory { get; }
-        private Func<HtmlDocument, ArgumentObject, ArgumentObject[]> _findSubcatalogs;
-        private Func<HtmlDocument, ArgumentObject, ArgumentObject[]> _findProducts;
+        private Func<HtmlNode, bool> IsCategory { get; }
+        private Dictionary<string, Search<string>> SinglePropertiesProduct { get; }
+        private Dictionary<string, Search<string[]>> PluralPropertiesProduct { get; }
+        private Dictionary<string, Search<string[]>> PluralPropertiesCategory { get; }
+        private Dictionary<string, Search<string>> SinglePropertiesCategory { get; }
+        private readonly Search<ArgumentObject[]> _findSubcatalogs;
+        private readonly Search<ArgumentObject[]> _findProducts;
+        private string XPathPagintaion;
+        public bool Debug;
 
-        public LiquiMolyClass(Dictionary<string, Func<HtmlDocument, ArgumentObject, string>> propertiesProduct
-            , Dictionary<string, Func<HtmlDocument, ArgumentObject, string>> propertiesCategory
-            , Func<HtmlDocument, bool> isCategory
-            , Func<HtmlDocument, ArgumentObject, ArgumentObject[]> findSubcatalogs
-            , Func<HtmlDocument, ArgumentObject, ArgumentObject[]> findProducts)
+        public LiquiMolyClass(
+            Func<HtmlNode, bool> isCategory
+            , Search<ArgumentObject[]> findSubcatalogs = null
+            , Search<ArgumentObject[]> findProducts = null
+            , Dictionary<string, Search<string>> singlePropertiesProduct = null
+            , Dictionary<string, Search<string[]>> pluralPropertiesProduct = null
+            , Dictionary<string, Search<string[]>> pluralPropertiesCategory = null
+            , Dictionary<string, Search<string>> singlePropertiesCategory = null
+            , string xPathPagination = "/u"
+            , bool debug = true)
         {
-            PropertiesProduct = propertiesProduct.ToDictionary(x => x.Key, x => x.Value);
-            PropetiesProductList = PropertiesProduct.Keys.ToList();
-            PropertiesCategory = propertiesCategory.ToDictionary(x => x.Key, x => x.Value);
-            PropetiesCategoryList = PropertiesCategory.Keys.ToList();
-            PropertiesList = PropetiesCategoryList.Union(PropetiesProductList).ToList();
+            SinglePropertiesProduct = singlePropertiesProduct?.ToDictionary(x => x.Key, x => x.Value);
+            SinglePropertiesCategory = singlePropertiesCategory?.ToDictionary(x => x.Key, x => x.Value);
+            PluralPropertiesCategory = pluralPropertiesCategory?.ToDictionary(x => x.Key, x => x.Value);
+            PluralPropertiesProduct = pluralPropertiesProduct?.ToDictionary(x => x.Key, x => x.Value);
             IsCategory = isCategory;
-            _findProducts = findProducts;
-            _findSubcatalogs = findSubcatalogs;
+            _findProducts = findProducts ?? ((node, o) => new ArgumentObject[0]) ;
+            _findSubcatalogs = findSubcatalogs ?? ((node, o) => new ArgumentObject[0]);
+            XPathPagintaion = xPathPagination;
+            Debug = debug;
+        }
+
+        private IEnumerable<ArgumentObject> ParseFromAllPages(
+            HtmlNode node,
+            ArgumentObject args,
+            Search<ArgumentObject[]> func)
+        {
+            foreach (var argument in func(node, args))
+            {
+                yield return argument;
+            }
+            Console.WriteLine(XPathPagintaion);
+            var links = node
+                ._SelectNodes(XPathPagintaion)
+                .Select(x => x.Attributes["href"].Value)
+                .Select(WebUtility.HtmlDecode);
+            var web = new HtmlWeb {OverrideEncoding = Encoding.UTF8};
+            foreach (var link in links)
+            {
+                var htmlNode = web.Load(link).DocumentNode;
+                foreach (var argument in func(htmlNode, args))
+                {
+                    yield return argument;
+                }
+            }
+        }
+
+        public IEnumerable<ProductCategoryObject> GetProductOrCategory(IEnumerable<ArgumentObject> enumerableArgs)
+        {
+            foreach (var args in enumerableArgs)
+            {
+                foreach (var result in GetProductOrCategory(args))
+                    yield return result;
+            }
+        }
+
+        public IEnumerable<ArgumentObject> GetLinks(ArgumentObject args, string xPath)
+        {
+            var web = new HtmlWeb {OverrideEncoding = Encoding.UTF8};
+            var node = web.Load(args.Url).DocumentNode;
+            return node.SelectNodes(xPath)
+                .Select(x => new ArgumentObject(url: x.Attributes["href"].Value
+                                                , args:args.Args));
         }
 
         public IEnumerable<ProductCategoryObject> GetProductOrCategory(ArgumentObject args)
@@ -40,6 +91,8 @@ namespace DataParser
             stack.Push(args);
             while (stack.Count != 0)
             {
+                if (Debug)
+                    Console.Write(stack.Peek().ToString());
                 var result = ProccessURL(stack.Pop());
                 if (result.IsCategory)
                 {
@@ -52,30 +105,31 @@ namespace DataParser
             }
         }
 
-        internal ProductCategoryObject ParseCategoryObject(HtmlDocument htmlDoc, ArgumentObject args)
+        private ProductCategoryObject ParseCategoryObject(HtmlNode node, ArgumentObject args)
         {
             return new ProductCategoryObject(
-                    properties: PropertiesCategory.ToDictionary(x => x.Key, x => x.Value(htmlDoc, args)),
-                    subcatalogs: _findSubcatalogs(htmlDoc, args).ToList(),
-                    products: _findProducts(htmlDoc, args).ToList()
+                    pluralProperties: PluralPropertiesCategory?.ToDictionary(x => x.Key, x => x.Value(node, args)),
+                    singleProperties: SinglePropertiesCategory.ToDictionary(x => x.Key, x => x.Value(node, args)),
+                    subcatalogs: ParseFromAllPages(node, args, _findSubcatalogs).ToList(),
+                    products: ParseFromAllPages(node, args, _findProducts).ToList()
                 );
         }
 
-        internal ProductCategoryObject ParseProductObject(HtmlDocument htmlDoc, ArgumentObject args)
+        private ProductCategoryObject ParseProductObject(HtmlNode node, ArgumentObject args)
         {
             return new ProductCategoryObject(
-                    properties: PropertiesProduct.ToDictionary(x => x.Key, x => x.Value(htmlDoc, args))
+                    singleProperties: SinglePropertiesProduct.ToDictionary(x => x.Key, x => x.Value(node, args)),
+                    pluralProperties: PluralPropertiesProduct?.ToDictionary(x => x.Key, x => x.Value(node, args))
                 );
         }
 
-        internal ProductCategoryObject ProccessURL(ArgumentObject args)
+        private ProductCategoryObject ProccessURL(ArgumentObject args)
         {
-            var web = new HtmlWeb();
-            web.OverrideEncoding = Encoding.Default;
-            var htmlDoc = web.Load(args.Url);
-            return IsCategory(htmlDoc) 
-                ? ParseCategoryObject(htmlDoc, args) 
-                : ParseProductObject(htmlDoc, args);
+            var web = new HtmlWeb {OverrideEncoding = Encoding.UTF8};
+            var node = web.Load(args.Url).DocumentNode;
+            return IsCategory(node) 
+                ? ParseCategoryObject(node, args) 
+                : ParseProductObject(node, args);
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace DataParser.HelperClasses
 {
@@ -12,8 +8,11 @@ namespace DataParser.HelperClasses
         {
             foreach (var el in collection)
                 yield return el;
-            foreach (var el in other)
-                yield return el;
+            if (other != null)
+            {
+                foreach (var el in other)
+                    yield return el;
+            }
         }
     }
 }

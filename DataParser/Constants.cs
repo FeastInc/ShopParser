@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.Contracts;
+using System.Net;
 
 namespace DataParser
 {
@@ -14,7 +13,12 @@ namespace DataParser
                                         @"""Краткое описание"";Описание;" +
                                         @"Теги;Заголовок;" +
                                         @"""META Keywords"";""META Description"";""Ссылка на витрину"";" +
-                                        @"Производитель;Объем;Изображения").Split(';');
+                                        @"Производитель;Объем").Split(';');
+
+        public static Func<string, string> WebAsystFormatter =
+            s => $"\"{WebUtility.HtmlDecode(s.Trim()).Replace('"', '\'')}\"";
+
+        public static byte[] BOM = {239, 187, 191};
 
     }
 }
