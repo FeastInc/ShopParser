@@ -13,7 +13,7 @@ namespace DataParser
                                         @"""Краткое описание"";Описание;" +
                                         @"Теги;Заголовок;" +
                                         @"""META Keywords"";""META Description"";""Ссылка на витрину"";" +
-                                        @"Производитель;Объем").Split(';');
+                                        @"Производитель;Объем;Габариты").Split(';');
 
         public static Func<string, string> WebAsystFormatter =
             s => $"\"{WebUtility.HtmlDecode(s.Trim()).Replace('"', '\'')}\"";

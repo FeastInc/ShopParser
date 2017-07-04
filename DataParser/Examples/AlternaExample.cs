@@ -12,7 +12,7 @@ namespace DataParser.Examples
             var alterna = new AlternaClass(
                 blockExp:@"//div[contains(@class, ""level_2"")]/div[@class=""item""]",
                 refProductExp:@"//div[@class=""uss_shop_name""]/a",
-                propertiesProduct: new Dictionary<string, Search<string>>
+                singlePropertiesProduct: new Dictionary<string, Search<string>>
                 {
                     ["Изображения"] = (node, o) => node
                         .SelectSingleNode(@"//a[@class=""enlarge_image_inside""]")

@@ -14,8 +14,7 @@ namespace DataParser
     {
         static void Main(string[] args)
         {
-            Pelikan7Example.Parse();
-            //AlternaExample.Parse();
+            ValdaExample.Parse();
         }
     }
 }

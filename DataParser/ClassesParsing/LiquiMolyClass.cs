@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -17,7 +18,7 @@ namespace DataParser
         private Dictionary<string, Search<string>> SinglePropertiesCategory { get; }
         private readonly Search<ArgumentObject[]> _findSubcatalogs;
         private readonly Search<ArgumentObject[]> _findProducts;
-        private string XPathPagintaion;
+        private readonly Search<ArgumentObject[]> _xPathPagintaion;
         public bool Debug;
 
         public LiquiMolyClass(
@@ -28,7 +29,7 @@ namespace DataParser
             , Dictionary<string, Search<string[]>> pluralPropertiesProduct = null
             , Dictionary<string, Search<string[]>> pluralPropertiesCategory = null
             , Dictionary<string, Search<string>> singlePropertiesCategory = null
-            , string xPathPagination = "/u"
+            , Search<ArgumentObject[]> xPathPagination = null
             , bool debug = true)
         {
             SinglePropertiesProduct = singlePropertiesProduct?.ToDictionary(x => x.Key, x => x.Value);
@@ -38,7 +39,7 @@ namespace DataParser
             IsCategory = isCategory;
             _findProducts = findProducts ?? ((node, o) => new ArgumentObject[0]) ;
             _findSubcatalogs = findSubcatalogs ?? ((node, o) => new ArgumentObject[0]);
-            XPathPagintaion = xPathPagination;
+            _xPathPagintaion = xPathPagination ?? ((node, o) => new ArgumentObject[0]);
             Debug = debug;
         }
 
@@ -51,15 +52,11 @@ namespace DataParser
             {
                 yield return argument;
             }
-            Console.WriteLine(XPathPagintaion);
-            var links = node
-                ._SelectNodes(XPathPagintaion)
-                .Select(x => x.Attributes["href"].Value)
-                .Select(WebUtility.HtmlDecode);
+            var links = _xPathPagintaion(node, args);
             var web = new HtmlWeb {OverrideEncoding = Encoding.UTF8};
             foreach (var link in links)
             {
-                var htmlNode = web.Load(link).DocumentNode;
+                var htmlNode = web.Load(link.Url).DocumentNode;
                 foreach (var argument in func(htmlNode, args))
                 {
                     yield return argument;
@@ -76,13 +73,15 @@ namespace DataParser
             }
         }
 
-        public IEnumerable<ArgumentObject> GetLinks(ArgumentObject args, string xPath)
+        public IEnumerable<ArgumentObject> GetLinks(ArgumentObject args, 
+            string xPath,
+            string url = "")
         {
             var web = new HtmlWeb {OverrideEncoding = Encoding.UTF8};
             var node = web.Load(args.Url).DocumentNode;
             return node.SelectNodes(xPath)
-                .Select(x => new ArgumentObject(url: x.Attributes["href"].Value
-                                                , args:args.Args));
+                .Select(x => new ArgumentObject(url: url + x.Attributes["href"].Value,
+                                                args:args.Args));
         }
 
         public IEnumerable<ProductCategoryObject> GetProductOrCategory(ArgumentObject args)
@@ -127,6 +126,7 @@ namespace DataParser
         {
             var web = new HtmlWeb {OverrideEncoding = Encoding.UTF8};
             var node = web.Load(args.Url).DocumentNode;
+            //File.WriteAllText("tmp.html", node.InnerHtml);
             return IsCategory(node) 
                 ? ParseCategoryObject(node, args) 
                 : ParseProductObject(node, args);

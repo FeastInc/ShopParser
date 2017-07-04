@@ -17,8 +17,7 @@ namespace DataParser
         public override string ToString()
         {
             return $"URL: {Url}\n" +
-                   $"Arguments: {{{string.Join(", ", Args??new object[0])}}}\n" +
-                   $"{new string('-', 10)}\n";
+                   $"Arguments: {{{string.Join(", ", Args ?? new object[0])}}}\n";
         }
     }
 }

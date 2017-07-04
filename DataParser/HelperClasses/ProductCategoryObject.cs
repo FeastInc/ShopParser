@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace DataParser
 {
@@ -50,5 +51,41 @@ namespace DataParser
             }
         }
 
+        public override string ToString()
+        {
+            var str = new StringBuilder("Single Properties:\n");
+            foreach (var property in SingleProperties)
+            {
+                str.Append($"{property.Key}: {property.Value}, ");
+            }
+            if (PluralProperties != null && PluralProperties.Count > 0)
+            {
+                str.Append("\n");
+                str.Append("Plural Properties:\n");
+                foreach (var property in PluralProperties)
+                {
+                    str.Append($"{property.Key}: {property.Value}, ");
+                }
+            }
+            if (Products != null)
+            {
+                str.Append("\n");
+                str.Append("Products: ");
+                foreach (var product in Products)
+                {
+                    str.Append(product);
+                }
+            }
+            if (Subcatalogs != null)
+            {
+                str.Append("\n");
+                str.Append("Subcatalogs: ");
+                foreach (var product in Subcatalogs)
+                {
+                    str.Append(product);
+                }
+            }
+            return str.ToString();
+        }
     }
 }
