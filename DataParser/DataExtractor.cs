@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataParser.HelperClasses;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace DataParser

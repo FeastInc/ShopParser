@@ -20,17 +20,19 @@ namespace DataParser
         private readonly Search<ArgumentObject[]> _findProducts;
         private readonly Search<ArgumentObject[]> _xPathPagintaion;
         public bool Debug;
+        private Encoding _encoding;
 
         public LiquiMolyClass(
-            Func<HtmlNode, bool> isCategory
-            , Search<ArgumentObject[]> findSubcatalogs = null
-            , Search<ArgumentObject[]> findProducts = null
-            , Dictionary<string, Search<string>> singlePropertiesProduct = null
-            , Dictionary<string, Search<string[]>> pluralPropertiesProduct = null
-            , Dictionary<string, Search<string[]>> pluralPropertiesCategory = null
-            , Dictionary<string, Search<string>> singlePropertiesCategory = null
-            , Search<ArgumentObject[]> xPathPagination = null
-            , bool debug = true)
+            Func<HtmlNode, bool> isCategory,
+            Search<ArgumentObject[]> findSubcatalogs = null,
+            Search<ArgumentObject[]> findProducts = null,
+            Dictionary<string, Search<string>> singlePropertiesProduct = null,
+            Dictionary<string, Search<string[]>> pluralPropertiesProduct = null,
+            Dictionary<string, Search<string[]>> pluralPropertiesCategory = null,
+            Dictionary<string, Search<string>> singlePropertiesCategory = null,
+            Search<ArgumentObject[]> xPathPagination = null,
+            bool debug = true,
+            Encoding encoding = null)
         {
             SinglePropertiesProduct = singlePropertiesProduct?.ToDictionary(x => x.Key, x => x.Value);
             SinglePropertiesCategory = singlePropertiesCategory?.ToDictionary(x => x.Key, x => x.Value);
@@ -41,6 +43,7 @@ namespace DataParser
             _findSubcatalogs = findSubcatalogs ?? ((node, o) => new ArgumentObject[0]);
             _xPathPagintaion = xPathPagination ?? ((node, o) => new ArgumentObject[0]);
             Debug = debug;
+            _encoding = encoding ?? Encoding.UTF8;
         }
 
         private IEnumerable<ArgumentObject> ParseFromAllPages(
@@ -53,7 +56,7 @@ namespace DataParser
                 yield return argument;
             }
             var links = _xPathPagintaion(node, args);
-            var web = new HtmlWeb {OverrideEncoding = Encoding.UTF8};
+            var web = new HtmlWeb {OverrideEncoding = _encoding };
             foreach (var link in links)
             {
                 var htmlNode = web.Load(link.Url).DocumentNode;
@@ -77,9 +80,9 @@ namespace DataParser
             string xPath,
             string url = "")
         {
-            var web = new HtmlWeb {OverrideEncoding = Encoding.UTF8};
+            var web = new HtmlWeb { OverrideEncoding = _encoding };
             var node = web.Load(args.Url).DocumentNode;
-            return node.SelectNodes(xPath)
+            return node._SelectNodes(xPath)
                 .Select(x => new ArgumentObject(url: url + x.Attributes["href"].Value,
                                                 args:args.Args));
         }
@@ -92,7 +95,7 @@ namespace DataParser
             {
                 if (Debug)
                     Console.Write(stack.Peek().ToString());
-                var result = ProccessURL(stack.Pop());
+                var result = ProccessUrl(stack.Pop());
                 if (result.IsCategory)
                 {
                     foreach (var product in result.Products)
@@ -122,9 +125,9 @@ namespace DataParser
                 );
         }
 
-        private ProductCategoryObject ProccessURL(ArgumentObject args)
+        private ProductCategoryObject ProccessUrl(ArgumentObject args)
         {
-            var web = new HtmlWeb {OverrideEncoding = Encoding.UTF8};
+            var web = new HtmlWeb {OverrideEncoding = _encoding };
             var node = web.Load(args.Url).DocumentNode;
             //File.WriteAllText("tmp.html", node.InnerHtml);
             return IsCategory(node) 

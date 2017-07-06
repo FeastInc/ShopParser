@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace DataParser
+namespace DataParser.HelperClasses
 {
     public class ProductCategoryObject
     {

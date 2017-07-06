@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using DataParser.Examples;
-using DataParser.HelperClasses;
-using HtmlAgilityPack;
-using System.Net;
-using System.Text;
+﻿using DataParser.Examples;
 
 namespace DataParser
 {
@@ -14,7 +6,7 @@ namespace DataParser
     {
         static void Main(string[] args)
         {
-            ValdaExample.Parse();
+            RntoysExample.Parse();
         }
     }
 }

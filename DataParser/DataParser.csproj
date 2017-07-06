@@ -55,13 +55,18 @@
   <ItemGroup>
     <Compile Include="Examples\AddinolDataExtractorExample.cs" />
     <Compile Include="Examples\AlternaExample.cs" />
+    <Compile Include="Examples\IgrRuExample.cs" />
     <Compile Include="Examples\IgrushkaPermExample.cs" />
     <Compile Include="Examples\MdiToysExample.cs" />
+    <Compile Include="Examples\MirkukolivanovoExample.cs" />
     <Compile Include="Examples\OksvaTmExample.cs" />
     <Compile Include="Examples\Pelikan7Example.cs" />
     <Compile Include="DataExtractor.cs" />
+    <Compile Include="Examples\RntoysExample.cs" />
+    <Compile Include="Examples\TdDvorikiExample.cs" />
     <Compile Include="Examples\TomikExample.cs" />
     <Compile Include="Examples\ValdaExample.cs" />
+    <Compile Include="Examples\VesnaKirov.cs" />
     <Compile Include="HelperClasses\ArgumentObject.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ClassesParsing\AlternaClass.cs" />
