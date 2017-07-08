@@ -51,6 +51,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="xNet">
+      <HintPath>.\xNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Examples\AddinolDataExtractorExample.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="HelperClasses\HtmlAgilityPackExtension.cs" />
     <Compile Include="HelperClasses\ProductCategoryObject.cs" />
     <Compile Include="HelperClasses\Humanization.cs" />
+    <Compile Include="HtmlDownload.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="Merger.cs" />
     <Compile Include="Program.cs" />
