@@ -19,7 +19,11 @@ namespace DataParser
             //{
             //    Console.WriteLine(o.ToString());
             //}
+<<<<<<< HEAD
+            GratwestExample.Parse();
+=======
             PolisieToysExample.Parse();
+>>>>>>> 2e42238823359a9c0fb24797f02f192f1eb45638
         }
     }
 }

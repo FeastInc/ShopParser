@@ -70,6 +70,7 @@
     <Compile Include="DataExtractorExamples\IgrRuDataExtractorExample.cs" />
     <Compile Include="HelperClasses\ExcelRangeExtension.cs" />
     <Compile Include="ParserExamples\AlternaExample.cs" />
+    <Compile Include="ParserExamples\GratwestExample.cs" />
     <Compile Include="ParserExamples\IgrRuExample.cs" />
     <Compile Include="ParserExamples\IgrushkaPermExample.cs" />
     <Compile Include="ParserExamples\MdiToysExample.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="ParserExamples\RntoysExample.cs" />
     <Compile Include="ParserExamples\TdDvorikiExample.cs" />
     <Compile Include="ParserExamples\TomikExample.cs" />
+    <Compile Include="ParserExamples\ToysOstExample.cs" />
     <Compile Include="ParserExamples\ValdaExample.cs" />
     <Compile Include="ParserExamples\VesnaKirov.cs" />
     <Compile Include="HelperClasses\ArgumentObject.cs" />
