@@ -66,7 +66,6 @@ namespace DataParser.Examples
 
             var argument = new ArgumentObject(
                 url: URL,
-                //url: @"http://oksva-tm.ru/catalog/15",
                 args: new object[] { 1 });
 
             var collection =
