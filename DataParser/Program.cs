@@ -19,7 +19,7 @@ namespace DataParser
             //{
             //    Console.WriteLine(o.ToString());
             //}
-            IgrRuExample.Parse();
+            GratwestExample.Parse();
         }
     }
 }
