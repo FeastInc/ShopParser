@@ -11,26 +11,34 @@ namespace DataParser
             IEnumerable<ProductCategoryObject> collection,
             IEnumerable<ProductCategoryObject> other,
             Func<ProductCategoryObject, string> setKeyCollection,
-            Func<ProductCategoryObject, string> setKeyOtherCollection,
-            bool addMissingKeys = false
+            Func<ProductCategoryObject, string> setKeyOtherCollection
             )
         {
             var collectionToDictionary = collection
                 .ToDictionary(setKeyCollection, x => x);
             var otherToDictonary = other
                 .ToDictionary(setKeyOtherCollection, x => x);
-            foreach (var obj in otherToDictonary)
-            {
-                if (!collectionToDictionary.ContainsKey(obj.Key) && addMissingKeys)
+            //if (collectionToDictionary.Count > otherToDictonary.Count)
+            //{
+            //    foreach (var obj in otherToDictonary)
+            //    {
+            //        if (collectionToDictionary.ContainsKey(obj.Key))
+            //        {
+            //            collectionToDictionary[obj.Key].Update(obj.Value);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+                foreach (var obj in collectionToDictionary)
                 {
-                    collectionToDictionary[obj.Key] = obj.Value;
+                    if (otherToDictonary.ContainsKey(obj.Key))
+                    {
+                        collectionToDictionary[obj.Key].Update(otherToDictonary[obj.Key]);
+                    }
                 }
-                else if (collectionToDictionary.ContainsKey(obj.Key))
-                {
-                    collectionToDictionary[obj.Key].Update(obj.Value);
-                }
-            }
-
+            Console.WriteLine($"{otherToDictonary.ContainsKey("107645")}");
+            //}
             foreach (var o in collectionToDictionary)
                 yield return o.Value;
         }

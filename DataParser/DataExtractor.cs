@@ -11,9 +11,9 @@ namespace DataParser
         public static IEnumerable<ProductCategoryObject> Extract(
             string path,
             HashSet<int> pagesToExtact,
-            Func<object[], bool> filter,
-            Dictionary<string, Func<object[], string>> singlePropertiesFunc,
-            Dictionary<string, Func<object[], string[]>> pluralPropertiesFunc,
+            Func<Excel.Range[], bool> filter,
+            Dictionary<string, Func<Excel.Range[], string>> singlePropertiesFunc,
+            Dictionary<string, Func<Excel.Range[], string[]>> pluralPropertiesFunc,
             int startIndex = 1)
         { 
             var xlApp = new Excel.Application();
@@ -26,8 +26,7 @@ namespace DataParser
                 {
                     var rowArray = Enumerable
                         .Range(1, range.Columns.Count)
-                        .Select(x => (range.Cells[row, x] as Excel.Range)?.Value2
-                                        ?? String.Empty)
+                        .Select(x => range.Cells[row, x] as Excel.Range)
                         .ToArray();
                     if (filter(rowArray))
                     {

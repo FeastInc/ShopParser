@@ -86,12 +86,9 @@ namespace DataParser.Examples
                 //parser.GetProductOrCategory(links);
                 parser.GetProductOrCategory(argument);
             Import.Write(path: "tomik.csv",
-                collection: collection,
+                collection: collection.ToArray(),
                 headers: Constants.WebAsystKeys,
                 format: Constants.WebAsystFormatter);
         }
-        //as_action	dfd8cfff141bdf510d5aa0a6566f17cc7a251c5f
-        //as_action dfd8cfff141bdf510d5aa0a6566f17cc7a251c5f
-        //as_action	3ddbe9dab119c2e2b5333ae4242252ec6171b472
     }
 }

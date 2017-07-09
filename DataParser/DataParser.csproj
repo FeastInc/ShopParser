@@ -53,20 +53,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Examples\AddinolDataExtractorExample.cs" />
-    <Compile Include="Examples\AlternaExample.cs" />
-    <Compile Include="Examples\IgrRuExample.cs" />
-    <Compile Include="Examples\IgrushkaPermExample.cs" />
-    <Compile Include="Examples\MdiToysExample.cs" />
-    <Compile Include="Examples\MirkukolivanovoExample.cs" />
-    <Compile Include="Examples\OksvaTmExample.cs" />
-    <Compile Include="Examples\Pelikan7Example.cs" />
+    <Compile Include="DataExtractorExamples\AddinolDataExtractorExample.cs" />
+    <Compile Include="DataExtractorExamples\IgrRuDataExtractorExample.cs" />
+    <Compile Include="HelperClasses\ExcelRangeExtension.cs" />
+    <Compile Include="ParserExamples\AlternaExample.cs" />
+    <Compile Include="ParserExamples\IgrRuExample.cs" />
+    <Compile Include="ParserExamples\IgrushkaPermExample.cs" />
+    <Compile Include="ParserExamples\MdiToysExample.cs" />
+    <Compile Include="ParserExamples\MirkukolivanovoExample.cs" />
+    <Compile Include="ParserExamples\OksvaTmExample.cs" />
+    <Compile Include="ParserExamples\Pelikan7Example.cs" />
     <Compile Include="DataExtractor.cs" />
-    <Compile Include="Examples\RntoysExample.cs" />
-    <Compile Include="Examples\TdDvorikiExample.cs" />
-    <Compile Include="Examples\TomikExample.cs" />
-    <Compile Include="Examples\ValdaExample.cs" />
-    <Compile Include="Examples\VesnaKirov.cs" />
+    <Compile Include="ParserExamples\RntoysExample.cs" />
+    <Compile Include="ParserExamples\TdDvorikiExample.cs" />
+    <Compile Include="ParserExamples\TomikExample.cs" />
+    <Compile Include="ParserExamples\ValdaExample.cs" />
+    <Compile Include="ParserExamples\VesnaKirov.cs" />
     <Compile Include="HelperClasses\ArgumentObject.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ClassesParsing\AlternaClass.cs" />

@@ -23,7 +23,7 @@ namespace DataParser.Examples
                 [@"""Код артикула"""] = (node, o) => node
                     .SelectSingleNode(@"//div[@id='content']/div[2]/div/table/tr/td[2]/table/tr[3]/td[2]")
                     .InnerText,
-                ["Габариты"] = (node, o) => node
+                ["Размеры"] = (node, o) => node
                     .SelectSingleNode(@"//div[@id='content']/div[2]/div/table/tr/td[2]/table/tr[5]/td[2]")
                     .InnerText,
                 ["Описание"] = (node, o) => node
@@ -78,9 +78,9 @@ namespace DataParser.Examples
                 parser.GetProductOrCategory(parser.GetLinks(argument, @".//*[@id='category_menu']/ul/li/a"));
             //parser.GetProductOrCategory(argument);
             Import.Write(path: "pelikan7.csv",
-                        collection:collection,
-                        headers: Constants.WebAsystKeys,
-                        format: Constants.WebAsystFormatter);
+                collection: collection.ToArray(),
+                headers: Constants.WebAsystKeys,
+                format: Constants.WebAsystFormatter);
         }
     }
 }

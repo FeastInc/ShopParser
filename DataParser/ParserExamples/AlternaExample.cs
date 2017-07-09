@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DataParser.HelperClasses;
 using HtmlAgilityPack;
 
@@ -44,10 +45,10 @@ namespace DataParser.Examples
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "Мебель детская"}, isCategory: true)
             }.Extend(collection);
-            Import.Write(path: "alterna.csv"
-                , collection: collection
-                , headers: Constants.WebAsystKeys
-                , format: Constants.WebAsystFormatter);
+            Import.Write(path: "alterna.csv",
+                collection: collection.ToArray(),
+                headers: Constants.WebAsystKeys,
+                format: Constants.WebAsystFormatter);
 
         }
     }

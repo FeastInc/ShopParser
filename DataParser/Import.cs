@@ -28,7 +28,7 @@ namespace DataParser
         }
 
         public static void Write(string path
-            , IEnumerable<ProductCategoryObject> collection
+            , ProductCategoryObject[] collection
             , string[] headers
             , Func<string, string> format = null)
         {

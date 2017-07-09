@@ -58,10 +58,10 @@ namespace DataParser.Examples
                 args: new object[] { 0 });
             var collection = parser.GetProductOrCategory(
                 parser.GetLinks(arguments, @".//*[@id='top']/div[6]/div/div/ul[1]/li[position() > 1]/a"));
-            Import.Write(path: "mdi-toys.csv"
-                , collection: collection
-                , headers: Constants.WebAsystKeys
-                , format: Constants.WebAsystFormatter);
+            Import.Write(path: "mdi-toys.csv",
+                collection: collection.ToArray(),
+                headers: Constants.WebAsystKeys,
+                format: Constants.WebAsystFormatter);
         }
     }
 }

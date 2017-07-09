@@ -58,7 +58,7 @@ namespace DataParser.Examples
 
             var collection = parser.GetProductOrCategory(argument);
             Import.Write(path: "tddvoriki.csv",
-                collection: collection,
+                collection: collection.ToArray(),
                 headers: Constants.WebAsystKeys,
                 format: Constants.WebAsystFormatter);
         }

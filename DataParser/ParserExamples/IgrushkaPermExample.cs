@@ -46,10 +46,10 @@ namespace DataParser.Examples
             var arguments = new ArgumentObject(url: "http://www.igrushka.perm.ru/toys/",
                 args: new object[] { 0 });
             var collection = parser.GetProductOrCategory(arguments);
-            Import.Write(path: "IgrushkaPerm.csv"
-                , collection: collection
-                , headers: Constants.WebAsystKeys
-                , format: Constants.WebAsystFormatter);
+            Import.Write(path: "IgrushkaPerm.csv",
+                collection: collection.ToArray(),
+                headers: Constants.WebAsystKeys,
+                format: Constants.WebAsystFormatter);
         }
     }
 }

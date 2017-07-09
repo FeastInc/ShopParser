@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using DataParser.HelperClasses;
 
 namespace DataParser.Examples
@@ -27,7 +28,7 @@ namespace DataParser.Examples
                 ["Вес"] = (node, args) => node
                     .SelectSingleNode(@".//*[@id='ctl00_MainContent_panWeight']/span")
                     .InnerText,
-                ["Габариты"] = (node, args) => node
+                ["Размеры"] = (node, args) => node
                     .SelectSingleNode(@".//*[@id='ctl00_MainContent_panDimensions']/span")
                     .InnerText,
                 ["Валюта"] = (node, o) => "RUB",
@@ -60,6 +61,7 @@ namespace DataParser.Examples
                     ["Изображения"] = (node, args) => node
                         ._SelectNodes(@".//*[@id='ctl00_MainContent_panImageContainer']/div/div/img")
                         .Select(x => URL + x.Attributes["src"].Value)
+                        .Select(HttpUtility.UrlPathEncode)
                         .ToArray()
                 }
             );
@@ -67,7 +69,7 @@ namespace DataParser.Examples
             var argument = new ArgumentObject(
                 url: URL,
                 //url: @"http://oksva-tm.ru/catalog/15",
-                args: new object[] { 1 });
+                args: new object[] { 2 });
 
             var collection =
                 parser.GetProductOrCategory(parser.GetLinks(argument,
@@ -77,10 +79,12 @@ namespace DataParser.Examples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true)
+                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                new ProductCategoryObject(
+                    new Dictionary<string, string> {["Наименование"] = "!Rntoys"}, isCategory: true)
             }.Extend(collection);
             Import.Write(path: "rntoys.csv",
-                collection: collection,
+                collection: collection.ToArray(),
                 headers: Constants.WebAsystKeys,
                 format: Constants.WebAsystFormatter);
         }
