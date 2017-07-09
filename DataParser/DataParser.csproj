@@ -77,6 +77,7 @@
     <Compile Include="ParserExamples\OksvaTmExample.cs" />
     <Compile Include="ParserExamples\Pelikan7Example.cs" />
     <Compile Include="DataExtractor.cs" />
+    <Compile Include="ParserExamples\PolisieToysExample.cs" />
     <Compile Include="ParserExamples\RntoysExample.cs" />
     <Compile Include="ParserExamples\TdDvorikiExample.cs" />
     <Compile Include="ParserExamples\TomikExample.cs" />
