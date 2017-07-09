@@ -18,18 +18,6 @@ namespace DataParser
                 .ToDictionary(setKeyCollection, x => x);
             var otherToDictonary = other
                 .ToDictionary(setKeyOtherCollection, x => x);
-            //if (collectionToDictionary.Count > otherToDictonary.Count)
-            //{
-            //    foreach (var obj in otherToDictonary)
-            //    {
-            //        if (collectionToDictionary.ContainsKey(obj.Key))
-            //        {
-            //            collectionToDictionary[obj.Key].Update(obj.Value);
-            //        }
-            //    }
-            //}
-            //else
-            //{
                 foreach (var obj in collectionToDictionary)
                 {
                     if (otherToDictonary.ContainsKey(obj.Key))
@@ -37,8 +25,6 @@ namespace DataParser
                         collectionToDictionary[obj.Key].Update(otherToDictonary[obj.Key]);
                     }
                 }
-            Console.WriteLine($"{otherToDictonary.ContainsKey("107645")}");
-            //}
             foreach (var o in collectionToDictionary)
                 yield return o.Value;
         }

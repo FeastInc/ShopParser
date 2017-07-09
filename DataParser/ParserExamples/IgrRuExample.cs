@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DataParser.DataExtractorExamples;
 using DataParser.HelperClasses;
 
@@ -57,6 +58,8 @@ namespace DataParser.Examples
                     ["Изображения"] = (node, args) => node
                         ._SelectNodes(@"//td[@class='textsm']/a[img]")
                         .Select(x => mainUrl + x.Attributes["href"].Value)
+                        .Select(x => x.Substring(29).Replace(".jpg", string.Empty))
+                        .Select(x => $"http://img.simba-trade.ru/site1/{x}_c.jpg")
                         .ToArray()
                 },
                 encoding: Encoding.Default

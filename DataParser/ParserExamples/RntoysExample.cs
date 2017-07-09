@@ -68,12 +68,7 @@ namespace DataParser.Examples
 
             var argument = new ArgumentObject(
                 url: URL,
-<<<<<<< HEAD:DataParser/ParserExamples/RntoysExample.cs
-                //url: @"http://oksva-tm.ru/catalog/15",
                 args: new object[] { 2 });
-=======
-                args: new object[] { 1 });
->>>>>>> 5cdb86c0a9e0c355b142c7d556d0c3820d59c989:DataParser/Examples/RntoysExample.cs
 
             var collection =
                 parser.GetProductOrCategory(parser.GetLinks(argument,
