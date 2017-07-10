@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Web;
 using DataParser.HelperClasses;
 
 namespace DataParser.ParserExamples
@@ -12,28 +13,29 @@ namespace DataParser.ParserExamples
         {
             var images = new HashSet<string>();
             var URL = @"http://www.vesna.kirov.ru";
+            var suffix = @"?page_count=1000&sort=PROPERTY_IS_AVAILABLE|DESC&PAGEN_1=13";
             var singlePropertiesProduct = new Dictionary<string, Search<string>>
             {
                 ["Наименование"] = (node, args) => node
                     .SelectSingleNode(@"//h1")
-                    ?.InnerText ?? String.Empty,
+                    ?.InnerText ?? string.Empty,
                 [@"""Код артикула"""] = (node, args) =>
                 {
                     Thread.Sleep(1000);
                     Console.WriteLine("Delay");
                     return node
                         .SelectSingleNode(@".//*[@id='content']/div[2]/div/div/div[1]/div[2]/div[2]")
-                        ?.InnerText?.Substring(9) ?? String.Empty;
+                        ?.InnerText?.Substring(9) ?? string.Empty;
                 },
                 ["Цена"] = (node, args) => node
                     .SelectSingleNode(@".//*[@id='content']//div[contains(@class, 'pro-roght-price')]")
-                    ?.InnerText?.TrimEnd(new[] { '₽', ' ' }) ?? String.Empty,
+                    ?.InnerText?.TrimEnd(new[] { '₽', ' ' }) ?? string.Empty,
                 ["Описание"] = (node, args) => node
                     .SelectSingleNode(@".//*[@id='tabs']/div/div[1]")
-                    ?.InnerHtml ?? String.Empty +
+                    ?.InnerHtml ?? string.Empty +
                     node
                     .SelectSingleNode(@".//*[@id='tabs']/div/div[2]")
-                    ?.InnerHtml?.Replace("pro-info-list", String.Empty) ?? String.Empty,
+                    ?.InnerHtml?.Replace("pro-info-list", string.Empty) ?? string.Empty,
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",
@@ -43,13 +45,11 @@ namespace DataParser.ParserExamples
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
                 Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
-            singlePropertiesProduct[@"""Краткое описание"""] =
-                (node, args) => singlePropertiesProduct["Описание"](node, args).Split('.')[0];
 
             var parser = new LiquiMolyClass(
-                isCategory: node => node
-                    ._SelectNodes(@"//*[@class='pager']")
-                    .Count != 0,
+                isCategory: node =>node
+                        ._SelectNodes(@"//span[contains(text(), 'Сортировка')]")
+                        .Count != 0,
                 findProducts: (node, args) => node
                     ._SelectNodes(@"//div[@class='catalog-item']/div[1]/a[1]")
                     .Select(x => new ArgumentObject(URL + x.Attributes["href"].Value))
@@ -62,23 +62,21 @@ namespace DataParser.ParserExamples
                 },
                 pluralPropertiesProduct: new Dictionary<string, Search<string[]>>
                 {
-                    ["Изображения"] = (node, args) => node
-                        ._SelectNodes(@".//*[@id='content']/div[2]/div/div/div[1]/div[1]/p/a")
-                        .Select(x => URL + x.Attributes["href"].Value)
-                        .Where(x => images.Add(x))
-                        .ToArray()
+                    ["Изображения"] = (node, args) =>node
+                            ._SelectNodes(@"//*[contains(@class,'pic-default')]/div/a/img")
+                            .Select(x => URL + x.Attributes["data-zoom-image"].Value)
+                            .Select(HttpUtility.UrlEncode)
+                            .Where(x => images.Add(x))
+                            .ToArray()
                 },
-                singlePropertiesProduct: singlePropertiesProduct,
-                xPathPagination: (node, args) => node
-                    ._SelectNodes(@".//*[@id='content']/div[2]/div/div/div[4]/a[not(contains(@class, 'active'))]")
-                    .Select(x => new ArgumentObject(URL + x.Attributes["href"].Value))
-                    .ToArray()
+                singlePropertiesProduct: singlePropertiesProduct
                 );
             var arguments = new ArgumentObject(url: URL,
                 args: new object[] { 2 });
             var collection = parser.GetProductOrCategory(parser.GetLinks(args: arguments,
-                url: URL,
-                xPath: @".//*[@id='header']/div[2]/div/nav/ul/li[1]/div/ul/li/a"));
+                prefix: URL,
+                xPath: @".//*[@id='header']/div[2]/div/nav/ul/li[1]/div/ul/li/a",
+                suffix: suffix));
             collection = new[]
             {
                 new ProductCategoryObject(
@@ -86,7 +84,7 @@ namespace DataParser.ParserExamples
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!VesnaKirov"}, isCategory: true)
             }.Extend(collection);
-            Import.Write(path: "VesnaKirov.csv",
+            Import.Write(path: @"..\..\..\CSV\VesnaKirov.csv",
                 collection: collection.ToArray(),
                 headers: Constants.WebAsystKeys,
                 format: Constants.WebAsystFormatter);

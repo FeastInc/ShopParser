@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using DataParser.HelperClasses;
 
-namespace DataParser.Examples
+namespace DataParser.ParserExamples
 {
     class TomikExample
     {
@@ -73,9 +70,9 @@ namespace DataParser.Examples
                 );
 
             var argument = new ArgumentObject(
-                //url: @"http://tomik.ru/",
+                //prefix: @"http://tomik.ru/",
                 url: @"http://tomik.ru/katalog/nastolnye-igry/domino/",
-                //url: @"http://tomik.ru/katalog/elochnye-igrushki/podarki/kopiya-shnurovka-elochka-naryadnaya,-6-detalej.html",
+                //prefix: @"http://tomik.ru/katalog/elochnye-igrushki/podarki/kopiya-shnurovka-elochka-naryadnaya,-6-detalej.html",
                 args: new object[] { 0 });
             var links = parser
                 .GetLinks(argument, @".//*[@id='sidebar']/div[2]/ul/li/a")

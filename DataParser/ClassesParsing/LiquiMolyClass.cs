@@ -78,12 +78,13 @@ namespace DataParser
 
         public IEnumerable<ArgumentObject> GetLinks(ArgumentObject args, 
             string xPath,
-            string url = "")
+            string prefix = "",
+            string suffix = "")
         {
             var web = new HtmlWeb { OverrideEncoding = _encoding };
             var node = web.Load(args.Url).DocumentNode;
             return node._SelectNodes(xPath)
-                .Select(x => new ArgumentObject(url: url + x.Attributes["href"].Value,
+                .Select(x => new ArgumentObject(url: prefix + x.Attributes["href"].Value + suffix,
                                                 args:args.Args));
         }
 

@@ -15,15 +15,7 @@ namespace DataParser
     {
         static void Main(string[] args)
         {
-            //foreach (var o in IgrRuDataExtractorExample.Extract().Take(20))
-            //{
-            //    Console.WriteLine(o.ToString());
-            //}
-<<<<<<< HEAD
-            GratwestExample.Parse();
-=======
-            PolisieToysExample.Parse();
->>>>>>> 2e42238823359a9c0fb24797f02f192f1eb45638
+            VesnaKirov.Parse();
         }
     }
 }

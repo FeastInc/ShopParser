@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using DataParser.HelperClasses;
 
-namespace DataParser.Examples
+namespace DataParser.ParserExamples
 {
     class OksvaTmExample
     {
@@ -66,13 +63,13 @@ namespace DataParser.Examples
                 );
             var argument = new ArgumentObject(
                 url: @"http://oksva-tm.ru/catalog/",
-                //url: @"http://oksva-tm.ru/catalog/15",
+                //prefix: @"http://oksva-tm.ru/catalog/15",
                 args: new object[] { 2 });
 
             var collection =
             parser.GetProductOrCategory(parser.GetLinks(argument,
                 @".//*[@id='block-system-main']/div/div[1]/div/table/tbody/tr/td/div/span/a",
-                @"http://oksva-tm.ru"));
+                prefix: @"http://oksva-tm.ru"));
             //parser.GetProductOrCategory(argument);
             collection = new[]
             {

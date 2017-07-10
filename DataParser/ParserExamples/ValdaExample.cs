@@ -73,13 +73,13 @@ namespace DataParser.ParserExamples
                 );
             var argument = new ArgumentObject(
                 url: URL,
-                //url: @"http://oksva-tm.ru/catalog/15",
+                //prefix: @"http://oksva-tm.ru/catalog/15",
                 args: new object[] { 2 });
 
             var collection =
                 parser.GetProductOrCategory(parser.GetLinks(argument,
                     @".//*[@id='page-content']/div[1]/ul/li/a",
-                    URL));
+                    prefix: URL));
             //parser.GetProductOrCategory(argument);
             collection = new[]
             {
