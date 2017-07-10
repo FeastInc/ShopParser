@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using DataParser.HelperClasses;
-using HtmlAgilityPack;
 
-namespace DataParser.Examples
+namespace DataParser.ParserExamples
 {
     class Pelikan7Example
     {
@@ -71,7 +70,7 @@ namespace DataParser.Examples
                 );
             var argument = new ArgumentObject(
                 url: @"http://www.pelikan-7.ru/index.php?route=common/home",
-                //url: @"http://www.pelikan-7.ru/index.php?route=product/category&path=38_45",
+                //prefix: @"http://www.pelikan-7.ru/index.php?route=product/category&path=38_45",
                 args: new object[] {0});
 
             var collection =
