@@ -24,9 +24,9 @@ namespace DataParser
 
         public LiquiMolyClass(
             Func<HtmlNode, bool> isCategory,
+            Dictionary<string, Search<string>> singlePropertiesProduct,
             Search<ArgumentObject[]> findSubcatalogs = null,
             Search<ArgumentObject[]> findProducts = null,
-            Dictionary<string, Search<string>> singlePropertiesProduct = null,
             Dictionary<string, Search<string[]>> pluralPropertiesProduct = null,
             Dictionary<string, Search<string[]>> pluralPropertiesCategory = null,
             Dictionary<string, Search<string>> singlePropertiesCategory = null,
@@ -34,7 +34,7 @@ namespace DataParser
             bool debug = true,
             Encoding encoding = null)
         {
-            SinglePropertiesProduct = singlePropertiesProduct?.ToDictionary(x => x.Key, x => x.Value);
+            SinglePropertiesProduct = singlePropertiesProduct.ToDictionary(x => x.Key, x => x.Value);
             SinglePropertiesCategory = singlePropertiesCategory?.ToDictionary(x => x.Key, x => x.Value);
             PluralPropertiesCategory = pluralPropertiesCategory?.ToDictionary(x => x.Key, x => x.Value);
             PluralPropertiesProduct = pluralPropertiesProduct?.ToDictionary(x => x.Key, x => x.Value);

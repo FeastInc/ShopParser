@@ -10,9 +10,9 @@ namespace DataParser.ParserExamples
     {
         public static void Parse()
         {
-            var parser = new LiquiMolyClass(
-                isCategory: node => false
-                );
+            //var parser = new LiquiMolyClass(
+            //    isCategory: node => false
+            //    );
         }
     }
 }

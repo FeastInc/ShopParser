@@ -15,7 +15,7 @@ namespace DataParser
     {
         static void Main(string[] args)
         {
-            VesnaKirov.Parse();
+            PlaydoradoExample.Parse();
         }
     }
 }
