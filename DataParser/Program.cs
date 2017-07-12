@@ -15,11 +15,6 @@ namespace DataParser
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-            PlaydoradoExample.Parse();
-=======
-            MasterasExample.Parse();
->>>>>>> 8d2d0a2196cd571522c144d88ed6cd307f2b429b
         }
     }
 }
