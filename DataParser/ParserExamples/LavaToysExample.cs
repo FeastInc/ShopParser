@@ -32,9 +32,15 @@ namespace DataParser.ParserExamples
                 ["Описание"] = (node, args) => String.Format("Издает звук {0} при нажатии на игрушку", node
                     .SelectSingleNode(@"//*[@class='toy__song']")
                     ?.InnerText ?? string.Empty),
-                ["Размеры"] = (node, args) => "Высота: " + node
-                    .SelectSingleNode(@"//*[@class='toy__params-row'][2]/td[2]")
-                    .InnerText,
+                ["Размеры"] = (node, args) =>
+                {
+                    var length = node
+                     .SelectSingleNode(@"//*[@class='toy__params-row'][2]/td[2]")
+                     .InnerText;
+                    var remp = length.Contains("см");
+
+                    return length.Contains("см") ? "Высота: " +  length : string.Empty;
+                },
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",

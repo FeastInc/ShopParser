@@ -15,10 +15,7 @@ namespace DataParser
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-            LavaToysExample.Parse();
-=======
->>>>>>> a42ba89d3f7e9cb399082863eaab6ad96674d4f8
+            DynaToneExample.Parse();
         }
     }
 }
