@@ -71,11 +71,11 @@ namespace DataParser.ParserExamples
                     {
                         var a = node
                             ._SelectNodes(@"//a[contains(@id, 'zoom')]")
-                            .Select(x => x.Attributes["href"].Value)
+                            .Select(x => x.Attributes["href"].Value.Remove(4, 1))
                             .ToArray();
                         var result = node
                             ._SelectNodes(@"//div[@class='zoom-top']/a")
-                            .Select(x => x.Attributes["href"].Value)
+                            .Select(x => x.Attributes["href"].Value.Remove(4, 1))
                             .ToArray();
                         return a.Extend(result).ToArray();
                     }
