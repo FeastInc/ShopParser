@@ -34,6 +34,12 @@ namespace DataParser.Examples
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",
+                [@"Страна-производитель"] = (node, args) => node
+                    .SelectSingleNode(@".//*[@id='ctl00_MainContent_countryElement_iconCountry']")
+                    .Attributes["alt"].Value,
+                [@"""Возраст детей"""] = (node, args) => node
+                    .SelectSingleNode(@".//*[@id='ctl00_MainContent_panFeature']/span")
+                    .InnerText
             };
             singlePropertiesProduct["Заголовок"] = (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>

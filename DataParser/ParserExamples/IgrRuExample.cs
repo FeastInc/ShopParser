@@ -37,6 +37,10 @@ namespace DataParser.Examples
                 Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
             singlePropertiesProduct[@"""Краткое описание"""] =
                 (node, args) => singlePropertiesProduct["Описание"](node, args).Split('.')[0];
+            singlePropertiesProduct[@"""Возраст детей"""] = (node, args) =>
+                Regex.Match(singlePropertiesProduct["Описание"](node, args),
+                    @"детям\s+от\s+\d+\s+",
+                    RegexOptions.IgnoreCase).Value;
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node
@@ -71,7 +75,8 @@ namespace DataParser.Examples
             var collection = Merger.Merge(
                 collection: parser.GetProductOrCategory(arguments),
                 other: IgrRuDataExtractorExample.Extract(),
-                setKeyCollection: o => o.IsCategory ? o.SingleProperties["Наименование"] :o.SingleProperties["Код"],
+                setKeyCollection: o => o.IsCategory ? o.SingleProperties["Наименование"] 
+                                                    : o.SingleProperties["Код"],
                 setKeyOtherCollection: o => o.SingleProperties["Код"]);
             collection = new[]
             {

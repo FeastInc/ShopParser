@@ -15,6 +15,10 @@ namespace DataParser
     {
         static void Main(string[] args)
         {
+            foreach (var o in PolisieToysDataExtractorExample.Extract().Take(10))
+            {
+                Console.WriteLine(o);
+            }
         }
     }
 }

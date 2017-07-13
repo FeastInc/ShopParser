@@ -14,7 +14,7 @@ namespace DataParser.HelperClasses
         {
             return range.Hyperlinks.Count >= index
                 ? range.Hyperlinks[index].Address
-                : string.Empty;
+                : null;
         }
     }
 }

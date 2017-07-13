@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using DataParser.HelperClasses;
@@ -26,6 +27,12 @@ namespace DataParser.ParserExamples
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",
+                [@"""Возраст детей"""] = (node, args) => node
+                    .SelectSingleNode(@"//div[@class='field-label' and contains(text(), 'Возраст')]/../div[2]/div")
+                    .InnerText,
+                [@"Материал"] = (node, args) => node
+                    .SelectSingleNode(@"//div[@class='field-label' and contains(text(), 'Материал')]/../div[2]/div/text()")
+                    .InnerText
             };
 
             singlePropertiesProduct["Заголовок"] =

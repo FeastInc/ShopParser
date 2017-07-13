@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using DataParser.HelperClasses;
 
 namespace DataParser.ParserExamples
@@ -33,13 +34,18 @@ namespace DataParser.ParserExamples
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",
+                [@"""Зачеркнутая цена"""] = (node, args) => node
+                    .SelectSingleNode(@"//span[@class='compare-at-price nowrap']")
+                    ?.InnerText?.Replace(" ", string.Empty) ?? string.Empty,
+                [@"""Возраст детей"""] = (node, args) =>
+                {
+                    return Regex.Match(node.InnerText, @"Возраст.*\s+\w+", RegexOptions.IgnoreCase).Value;
+                }
             };
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
                 Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
-            singlePropertiesProduct[@"""Краткое описание"""] =
-                (node, args) => singlePropertiesProduct["Описание"](node, args).Split('.')[0];
             var parser = new LiquiMolyClass(
                 isCategory: node => node
                     ._SelectNodes(@"//*[@id='product-list']")

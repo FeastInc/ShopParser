@@ -16,12 +16,12 @@ namespace DataParser.DataExtractorExamples
                 pagesToExtact: new HashSet<int> {1},
                 singlePropertiesFunc: new Dictionary<string, Func<Range[], string>>
                 {
-                    ["Наименование"] = row => $"{row[0]?.Value2?.ToString()?.Substring(8)} {row[1]?.Value2}",
-                    ["SAE"] = row => row[2]?.Value2?.ToString(),
-                    ["ACEA"] = row => row[3]?.Value2?.ToString(),
-                    ["API"] = row => row[4]?.Value2?.ToString(),
-                    ["Объем"] = row => $"{row[5]?.Value2} {row[6]?.Value2}",
-                    ["Цена"] = row => row[7]?.Value2?.ToString(),
+                    ["Наименование"] = row => $"{row[0]._Value2().Substring(8)} {row[1]._Value2()}",
+                    ["SAE"] = row => row[2]._Value2(),
+                    ["ACEA"] = row => row[3]._Value2(),
+                    ["API"] = row => row[4]._Value2(),
+                    ["Объем"] = row => $"{row[5]._Value2()} {row[6]._Value2()}",
+                    ["Цена"] = row => row[7]._Value2(),
                 },
                 pluralPropertiesFunc: new Dictionary<string, Func<Range[], string[]>>(),
                 startIndex: 9);

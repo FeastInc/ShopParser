@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="DataExtractorExamples\AddinolDataExtractorExample.cs" />
     <Compile Include="DataExtractorExamples\IgrRuDataExtractorExample.cs" />
+    <Compile Include="DataExtractorExamples\PolisieToysDataExtractorExample.cs" />
     <Compile Include="HelperClasses\ExcelRangeExtension.cs" />
     <Compile Include="ParserExamples\AlternaExample.cs" />
     <Compile Include="ParserExamples\DynaToneExample.cs" />

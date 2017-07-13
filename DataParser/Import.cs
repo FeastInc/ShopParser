@@ -16,14 +16,14 @@ namespace DataParser
             foreach (var key in order)
                 yield return obj.SingleProperties.ContainsKey(key) 
                     ? obj.SingleProperties[key] 
-                    : String.Empty;
+                    : string.Empty;
             foreach (var property in obj.PluralProperties)
             {
                 var delta = countsPluralProperties[property.Key] - property.Value.Length;
                 foreach (var s in property.Value)
                     yield return s;
                 for (int i = 0; i < delta; i++)
-                    yield return String.Empty;
+                    yield return string.Empty;
             }
         }
 

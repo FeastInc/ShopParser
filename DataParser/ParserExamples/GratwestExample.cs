@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DataParser.HelperClasses;
 
@@ -46,6 +47,10 @@ namespace DataParser.ParserExamples
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
                 Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+            singlePropertiesProduct[@"""Возраст детей"""] = (node, args) =>
+                Regex.Match(singlePropertiesProduct["Описание"](node, args),
+                    @"Для\s+детей\s+от\s+\d+\s+лет",
+                    RegexOptions.IgnoreCase).Value;
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node
