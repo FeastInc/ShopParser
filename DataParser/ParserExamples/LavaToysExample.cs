@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using DataParser.HelperClasses;
+using System.Text.RegularExpressions;
 
 namespace DataParser.ParserExamples
 {
@@ -22,18 +23,24 @@ namespace DataParser.ParserExamples
                 [@"""Код артикула"""] = (node, args) => node
                     .SelectSingleNode(@"//*[@class='toy__article']")
                     .InnerText,
-                [@"""Зачеркнутая цена"""] = (node, args) => node
+                [@"""Зачеркнутая цена"""] = (node, args) => Regex.Replace(node
                     .SelectSingleNode(@"//*[@class='toy__old-price']")
-                    ?.InnerText ?? string.Empty,
-                ["Цена"] = (node, args) => node
+                    ?.InnerText ?? string.Empty, @"\s+", string.Empty),
+                ["Цена"] = (node, args) => Regex.Replace(node
                     .SelectSingleNode(@"//*[@class='toy__price-right']/strong")
-                    .InnerText,
+                    .InnerText, @"\s+", string.Empty),
                 ["Описание"] = (node, args) => String.Format("Издает звук {0} при нажатии на игрушку", node
                     .SelectSingleNode(@"//*[@class='toy__song']")
                     ?.InnerText ?? string.Empty),
-                ["Размеры"] = (node, args) => "Высота: " + node
-                    .SelectSingleNode(@"//*[@class='toy__params-row'][2]/td[2]")
-                    .InnerText,
+                ["Размеры"] = (node, args) =>
+                {
+                    var length = node
+                     .SelectSingleNode(@"//*[@class='toy__params-row'][2]/td[2]")
+                     .InnerText;
+                    var remp = length.Contains("см");
+
+                    return length.Contains("см") ? "Высота: " +  length : string.Empty;
+                },
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",

@@ -41,6 +41,9 @@ namespace DataParser.ParserExamples
                     }
                     return description;
                 },
+                ["Страна-производитель"] = (node, args) => node
+                    .SelectSingleNode(@"//table[@align='left']/../ul//li[contains(text(), ""Сделано"")]")
+                    ?.InnerText??string.Empty,
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",
