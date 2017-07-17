@@ -75,6 +75,9 @@
     <Compile Include="DataExtractorExamples\PolisieToysDataExtractorExample.cs" />
     <Compile Include="DBConnector.cs" />
     <Compile Include="HelperClasses\ExcelRangeExtension.cs" />
+    <Compile Include="HelperClasses\JoinerArticles.cs" />
+    <Compile Include="HelperClasses\ProductEquolityComparer.cs" />
+    <Compile Include="ParserExamples\AddinolExample.cs" />
     <Compile Include="ParserExamples\AlternaExample.cs" />
     <Compile Include="ParserExamples\DynaToneExample.cs" />
     <Compile Include="ParserExamples\GeoContExample.cs" />

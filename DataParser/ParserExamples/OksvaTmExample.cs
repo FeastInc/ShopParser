@@ -16,8 +16,8 @@ namespace DataParser.ParserExamples
                     ?.SelectSingleNode(@".//*[contains(@id,'node')]/div[1]/div[2]/span[2]")
                     ?.InnerText?.Replace("р.", string.Empty).Replace(" ", string.Empty) ?? string.Empty,
                 ["Описание"] = (node, args) => node
-                    ?.SelectSingleNode(@".//*[contains(@id,'node')]/div[1]/div[5]/div/div/p")
-                    ?.InnerHtml ?? string.Empty,
+                    ?.SelectSingleNode(@".//*[contains(@id, 'node')]//div[@property]")
+                    ?.InnerText ?? string.Empty,
                 ["Размеры"] = (node, args) => node
                     ?.SelectSingleNode(@".//*[contains(@id,'node')]/div[1]/div[9]/span[2]")
                     ?.InnerText ?? string.Empty,
@@ -27,12 +27,12 @@ namespace DataParser.ParserExamples
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",
-                [@"""Возраст детей"""] = (node, args) => node
-                    .SelectSingleNode(@"//div[@class='field-label' and contains(text(), 'Возраст')]/../div[2]/div")
-                    .InnerText,
+                //[@"""Возраст детей"""] = (node, args) => node
+                //    .SelectSingleNode(@"//div[@class='field-label' and contains(text(), 'Возраст')]/../div[2]/div")
+                //    .InnerText,
                 [@"Материал"] = (node, args) => node
                     .SelectSingleNode(@"//div[@class='field-label' and contains(text(), 'Материал')]/../div[2]/div/text()")
-                    .InnerText
+                    ?.InnerText ?? string.Empty
             };
 
             singlePropertiesProduct["Заголовок"] =
