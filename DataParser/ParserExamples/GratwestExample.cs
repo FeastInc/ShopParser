@@ -34,23 +34,16 @@ namespace DataParser.ParserExamples
                     .SelectSingleNode(@".//*[@id='detail_dop_info']")
                     .InnerHtml + 
                     node.SelectSingleNode(@".//table[@class='catalog-detail']")
-                    .InnerHtml,
-                [@"""Краткое описание"""] = (node, args) =>
-                {
-                    var text = node
-                        .SelectSingleNode(@".//*[@id='detail_dop_info']")
-                        .InnerText;
-                    return text.Substring(0, text.Length < 100 ? text.Length : 100) + "...";
-                },
+                    .InnerHtml
             };
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
                 Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
-            singlePropertiesProduct[@"""Возраст детей"""] = (node, args) =>
-                Regex.Match(singlePropertiesProduct["Описание"](node, args),
-                    @"Для\s+детей\s+от\s+\d+\s+лет",
-                    RegexOptions.IgnoreCase).Value;
+            //singlePropertiesProduct[@"""Возраст детей"""] = (node, args) =>
+            //    Regex.Match(singlePropertiesProduct["Описание"](node, args),
+            //        @"Для\s+детей\s+от\s+\d+\s+лет",
+            //        RegexOptions.IgnoreCase).Value;
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node

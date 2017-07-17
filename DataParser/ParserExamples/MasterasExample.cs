@@ -108,6 +108,10 @@ namespace DataParser.ParserExamples
                     new Dictionary<string, string> {["Наименование"] = "!Masteras"}, isCategory: true)
             }.Extend(collection);
 
+            collection = JoinerArticles.JoinInOrderEnumerable(collection, "Наименование",
+                productFieldsForPluralProp: new[] { "Изображения" },
+                productFieldsForSingleProp: new[] { "Описание" });
+
             Import.Write(path: "../../../CSV/masteras.csv",
                collection: collection.ToArray(),
                headers: Constants.WebAsystKeys,

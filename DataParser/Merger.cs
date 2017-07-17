@@ -15,8 +15,10 @@ namespace DataParser
             )
         {
             var collectionToDictionary = collection
+                .Distinct(new ProductEqualityComparer(setKeyCollection))
                 .ToDictionary(setKeyCollection, x => x);
             var otherToDictonary = other
+                .Distinct(new ProductEqualityComparer(setKeyOtherCollection))
                 .ToDictionary(setKeyOtherCollection, x => x);
                 foreach (var obj in collectionToDictionary)
                 {

@@ -15,14 +15,11 @@ namespace DataParser
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-            foreach (var o in PolisieToysDataExtractorExample.Extract().Take(10))
+            foreach (var o in AddinolDataExtractorExample.Extract().Take(10))
             {
                 Console.WriteLine(o);
             }
-=======
-            DynaToneExample.Parse();
->>>>>>> 922872e980ae6f31e9ed62fca40d94d2c0590df2
+            //AddinolExample.Parse();
         }
     }
 }

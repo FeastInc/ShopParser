@@ -37,10 +37,10 @@ namespace DataParser.ParserExamples
                 [@"""Зачеркнутая цена"""] = (node, args) => node
                     .SelectSingleNode(@"//span[@class='compare-at-price nowrap']")
                     ?.InnerText?.Replace(" ", string.Empty) ?? string.Empty,
-                [@"""Возраст детей"""] = (node, args) =>
-                {
-                    return Regex.Match(node.InnerText, @"Возраст.*\s+\w+", RegexOptions.IgnoreCase).Value;
-                }
+                //[@"""Возраст детей"""] = (node, args) =>
+                //{
+                //    return Regex.Match(node.InnerText, @"Возраст.*\s+\w+", RegexOptions.IgnoreCase).Value;
+                //}
             };
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);

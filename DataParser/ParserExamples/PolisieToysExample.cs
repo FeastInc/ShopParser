@@ -82,7 +82,13 @@ namespace DataParser.ParserExamples
                 .Select(x => new ArgumentObject(url: addedUrl + x,
                                         args: new object[] { 2 }));
 
-            var collection = parser.GetProductOrCategory(arguments);
+            var collection = Merger.Merge(
+               collection: parser.GetProductOrCategory(arguments),
+               other: PolisieToysDataExtractorExample.Extract(),
+               setKeyCollection: o => o.IsCategory ? o.SingleProperties["Наименование"]
+                                                   : o.SingleProperties[@"""Код артикула"""],
+               setKeyOtherCollection: o => o.SingleProperties["Артикул"]);
+
             collection = new[]
             {
                 new ProductCategoryObject(

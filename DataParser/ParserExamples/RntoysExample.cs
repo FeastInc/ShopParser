@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Text.RegularExpressions;
 using DataParser.HelperClasses;
 
 namespace DataParser.Examples
@@ -22,9 +23,9 @@ namespace DataParser.Examples
                 [@"""Код артикула"""] = (node, args) => node
                     .SelectSingleNode(@".//*[@id='ctl00_MainContent_panTopRight']/div[1]/span")
                     .InnerText,
-                ["Цена"] = (node, args) => node
+                ["Цена"] = (node, args) => Regex.Replace(node
                     .SelectSingleNode(@".//*[@id='ctl00_MainContent_panTopRight']/div[2]/span")
-                    .InnerText.Replace("р.", String.Empty),
+                    .InnerText.Replace("р.", String.Empty), @"\s+", string.Empty),
                 ["Вес"] = (node, args) => node
                     .SelectSingleNode(@".//*[@id='ctl00_MainContent_panWeight']/span")
                     .InnerText,
@@ -37,7 +38,7 @@ namespace DataParser.Examples
                 [@"Страна-производитель"] = (node, args) => node
                     .SelectSingleNode(@".//*[@id='ctl00_MainContent_countryElement_iconCountry']")
                     .Attributes["alt"].Value,
-                [@"""Возраст детей"""] = (node, args) => node
+                ["Описание"] = (node, args) => node
                     .SelectSingleNode(@".//*[@id='ctl00_MainContent_panFeature']/span")
                     .InnerText
             };

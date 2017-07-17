@@ -35,15 +35,20 @@ namespace DataParser.ParserExamples
                     var desc = node
                       ._SelectNodes(@"//table[@align='left']/../p[1]")
                       ?.ToArray() ?? new HtmlNode[0];
-                    foreach(var e in desc)
+                    foreach (var e in desc)
                     {
                         description += e.InnerHtml;
                     }
                     return description;
                 },
-                ["Страна-производитель"] = (node, args) => node
-                    .SelectSingleNode(@"//table[@align='left']/../ul//li[contains(text(), ""Сделано"")]")
-                    ?.InnerText??string.Empty,
+                ["Страна-производитель"] = (node, args) =>
+                {
+                    var country = node
+                      .SelectSingleNode(@"//table[@align='left']/../ul//li[contains(text(), ""Сделано"")]")
+                      ?.InnerText ?? string.Empty;
+
+                    return country.Length > 1 ? GetNormalizeCountry(country) : string.Empty;
+                },
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",
@@ -98,6 +103,11 @@ namespace DataParser.ParserExamples
                collection: collection.ToArray(),
                headers: Constants.WebAsystKeys,
                format: Constants.WebAsystFormatter);
+        }
+
+        static string GetNormalizeCountry(string country)
+        {
+            return country.Contains("Китае") ? "Китай" : "Россия";
         }
     }
 }

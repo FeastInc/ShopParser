@@ -37,10 +37,10 @@ namespace DataParser.Examples
                 Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
             singlePropertiesProduct[@"""Краткое описание"""] =
                 (node, args) => singlePropertiesProduct["Описание"](node, args).Split('.')[0];
-            singlePropertiesProduct[@"""Возраст детей"""] = (node, args) =>
-                Regex.Match(singlePropertiesProduct["Описание"](node, args),
-                    @"детям\s+от\s+\d+\s+",
-                    RegexOptions.IgnoreCase).Value;
+            //singlePropertiesProduct[@"""Возраст детей"""] = (node, args) =>
+            //    Regex.Match(singlePropertiesProduct["Описание"](node, args),
+            //        @"детям\s+от\s+\d+\s+",
+            //        RegexOptions.IgnoreCase).Value;
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node

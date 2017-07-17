@@ -29,15 +29,23 @@ namespace DataParser.ParserExamples
                         .InnerText, @"\s+", string.Empty);
                     return a.Substring(0, a.Length - 7).Replace(" ", "");
                 },
-                [@"""Возраст детей"""] = (node, args) => {
-                    var a = Regex.Replace(node
+                //[@"""Возраст детей"""] = (node, args) => {
+                //    var a = Regex.Replace(node
+                //        .SelectSingleNode(@"//*[@class='prodCard'][2]/p[2]")
+                //        .InnerText, @"Возраст: ", string.Empty);
+                //    return a;
+                //},
+                ["Описание"] = (node, args) =>
+                {
+                    var first = node
+                      .SelectSingleNode(@"//*[@class='prodCard'][2]/p[1]/text()")
+                      ?.InnerText.Replace(badString, string.Empty) ?? string.Empty;
+                    var second = node
                         .SelectSingleNode(@"//*[@class='prodCard'][2]/p[2]")
-                        .InnerText, @"Возраст: ", string.Empty);
-                    return a;
+                        .InnerText;
+
+                    return first + second;
                 },
-                ["Описание"] = (node, args) => node
-                    .SelectSingleNode(@"//*[@class='prodCard'][2]/p[1]/text()")
-                    ?.InnerText.Replace(badString, string.Empty) ?? string.Empty,
                 ["Валюта"] = (node, o) => "RUB",
                 [@"""Доступен для заказа"""] = (node, o) => "1",
                 [@"Статус"] = (node, o) => "1",
