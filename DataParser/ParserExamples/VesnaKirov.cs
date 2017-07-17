@@ -11,7 +11,6 @@ namespace DataParser.ParserExamples
     {
         public static void Parse()
         {
-            var images = new HashSet<string>();
             var URL = @"http://www.vesna.kirov.ru";
             var suffix = @"?page_count=1000&sort=PROPERTY_IS_AVAILABLE|DESC&PAGEN_1=13";
             var singlePropertiesProduct = new Dictionary<string, Search<string>>
@@ -65,18 +64,19 @@ namespace DataParser.ParserExamples
                     ["Изображения"] = (node, args) =>node
                             ._SelectNodes(@"//*[contains(@class,'pic-default')]/div/a/img")
                             .Select(x => URL + x.Attributes["data-zoom-image"].Value)
-                            .Select(HttpUtility.UrlEncode)
-                            .Where(x => images.Add(x))
                             .ToArray()
                 },
                 singlePropertiesProduct: singlePropertiesProduct
                 );
-            var arguments = new ArgumentObject(url: URL,
+            var arguments = new ArgumentObject(
+                url: URL,
+                //url: @"http://vesna.kirov.ru/catalog/igrushki-iz-pvh/" + suffix,
                 args: new object[] { 2 });
             var collection = parser.GetProductOrCategory(parser.GetLinks(args: arguments,
                 prefix: URL,
                 xPath: @".//*[@id='header']/div[2]/div/nav/ul/li[1]/div/ul/li/a",
                 suffix: suffix));
+            //var collection = parser.GetProductOrCategory(arguments);
             collection = new[]
             {
                 new ProductCategoryObject(

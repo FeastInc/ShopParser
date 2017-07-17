@@ -20,7 +20,7 @@ namespace DataParser
         private readonly Search<ArgumentObject[]> _findProducts;
         private readonly Search<ArgumentObject[]> _xPathPagintaion;
         public bool Debug;
-        private Encoding _encoding;
+        private readonly Encoding _encoding;
 
         public LiquiMolyClass(
             Func<HtmlNode, bool> isCategory,

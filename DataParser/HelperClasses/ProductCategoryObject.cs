@@ -64,7 +64,7 @@ namespace DataParser.HelperClasses
                 str.Append("Plural Properties:\n");
                 foreach (var property in PluralProperties)
                 {
-                    str.Append($"{property.Key}: {property.Value}, ");
+                    str.Append($"{property.Key}: {string.Join(";", property.Value)}, ");
                 }
             }
             if (Products != null)
