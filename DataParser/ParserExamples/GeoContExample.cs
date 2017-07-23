@@ -14,7 +14,7 @@ namespace DataParser.ParserExamples
 
         public static void Parse()
         {
-            
+            var random = new Random();
             var URL = @"http://www.geokont.ru";
             var badString = "НЕТ В НАЛИЧИИ";
 
@@ -54,7 +54,7 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args) + "-GEK-" + random.Next());
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node
@@ -63,9 +63,9 @@ namespace DataParser.ParserExamples
                 findProducts: (node, args) =>
                 {
                     var a = node
-._SelectNodes(@"//*[@class='container-fluid body-content']/div[last()]//td[@class='smProdHead']/a")
-.Select(x => new ArgumentObject(URL + x.Attributes["href"].Value))
-.ToArray();
+                        ._SelectNodes(@"//*[@class='container-fluid body-content']/div[last()]//td[@class='smProdHead']/a")
+                        .Select(x => new ArgumentObject(URL + x.Attributes["href"].Value))
+                        .ToArray();
                     return a;
                 },
                 singlePropertiesCategory: new Dictionary<string, Search<string>>
@@ -82,9 +82,9 @@ Regex.Match(node.InnerHtml, @"<h2 class=""grpHead"">(.*?)</h2>", RegexOptions.Si
                 {
                     ["Изображения"] = (node, args) => {
                         var a = node
-._SelectNodes(@"//a[@id='popupImg']")
-.Select(x => URL + x.Attributes["href"].Value)
-.ToArray();
+                            ._SelectNodes(@"//a[@id='popupImg']")
+                            .Select(x => URL + x.Attributes["href"].Value)
+                            .ToArray();
                         return a;
                         }
                 },
@@ -103,7 +103,7 @@ Regex.Match(node.InnerHtml, @"<h2 class=""grpHead"">(.*?)</h2>", RegexOptions.Si
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!GeoCont"}, isCategory: true)
             }.Extend(collection);

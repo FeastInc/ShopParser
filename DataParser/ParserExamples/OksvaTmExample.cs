@@ -10,6 +10,7 @@ namespace DataParser.ParserExamples
     {
         public static void Parse()
         {
+            var random = new Random();
             var singlePropertiesProduct = new Dictionary<string, Search<string>>
             {
                 ["Цена"] = (node, args) => node
@@ -38,7 +39,7 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args) + "-OKS-" + random.Next());
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node
@@ -81,7 +82,7 @@ namespace DataParser.ParserExamples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!Оксва-тм"}, isCategory: true)
             }.Extend(collection);

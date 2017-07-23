@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using MySql.Data.MySqlClient;
+﻿using System.Collections.Generic;
+using System.Threading;
+using DataParser.Examples;
+using DataParser.ParserExamples;
 
 namespace DataParser
 {
@@ -9,15 +9,32 @@ namespace DataParser
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-            StihlExample.Parse();
-=======
-            foreach (var o in AddinolDataExtractorExample.Extract().Take(10))
+            var pool = new List<Thread>
             {
-                Console.WriteLine(o);
+                new Thread(DynaToneExample.Parse),
+                new Thread(GeoContExample.Parse),
+                new Thread(GratwestExample.Parse),
+                new Thread(IgrRuExample.Parse),
+                new Thread(LavaToysExample.Parse),
+                new Thread(MasterasExample.Parse),
+                new Thread(OksvaTmExample.Parse),
+                new Thread(PlaydoradoExample.Parse),
+                new Thread(PolisieToysExample.Parse),
+                new Thread(RntoysExample.Parse),
+                new Thread(ValdaExample.Parse),
+                new Thread(VesnaKirov.Parse),
+            };
+
+            foreach (var thread in pool)
+            {
+                thread.Start();
             }
-            //AddinolExample.Parse();
->>>>>>> 78bcde255a8b2d85489f36a43f8134a78b8a3b1a
+
+            foreach (var thread in pool)
+            {
+                thread.Join();
+            }
+
         }
     }
 }

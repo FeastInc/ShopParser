@@ -35,7 +35,7 @@ namespace DataParser.ParserExamples
 
             };
             singlePropertiesProduct[@"""Код артикула"""] = (node, args) =>
-                Regex.Match(singlePropertiesProduct["props"](node, args),
+                "PLO-" + Regex.Match(singlePropertiesProduct["props"](node, args),
                         @"Артикул:\s*(\w+)")
                     .Groups[1].Value;
             singlePropertiesProduct[@"Размеры"] = (node, args) =>
@@ -49,7 +49,8 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args)
+                                          + "-" + singlePropertiesProduct[@"""Код артикула"""](node, args));
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node
@@ -102,7 +103,7 @@ namespace DataParser.ParserExamples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!Playdorado"}, isCategory: true)
             }.Extend(collection);

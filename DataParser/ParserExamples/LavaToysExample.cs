@@ -20,7 +20,7 @@ namespace DataParser.ParserExamples
                 ["Наименование"] = (node, args) => node
                     .SelectSingleNode(@"//*[@class='toy__title']")
                     .InnerText,
-                [@"""Код артикула"""] = (node, args) => node
+                [@"""Код артикула"""] = (node, args) => "LVS-" + node
                     .SelectSingleNode(@"//*[@class='toy__article']")
                     .InnerText,
                 [@"""Зачеркнутая цена"""] = (node, args) => Regex.Replace(node
@@ -29,7 +29,7 @@ namespace DataParser.ParserExamples
                 ["Цена"] = (node, args) => Regex.Replace(node
                     .SelectSingleNode(@"//*[@class='toy__price-right']/strong")
                     .InnerText, @"\s+", string.Empty),
-                ["Описание"] = (node, args) => String.Format("Издает звук {0} при нажатии на игрушку", node
+                ["Описание"] = (node, args) => string.Format("Издает звук {0} при нажатии на игрушку", node
                     .SelectSingleNode(@"//*[@class='toy__song']")
                     ?.InnerText ?? string.Empty),
                 ["Размеры"] = (node, args) =>
@@ -49,7 +49,8 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args)
+                                          + "-" + singlePropertiesProduct[@"""Код артикула"""](node, args));
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node
@@ -94,7 +95,7 @@ namespace DataParser.ParserExamples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!LavaToys"}, isCategory: true)
             }.Extend(collection);

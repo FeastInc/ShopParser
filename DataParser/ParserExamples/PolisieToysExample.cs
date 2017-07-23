@@ -22,7 +22,7 @@ namespace DataParser.ParserExamples
                 ["Наименование"] = (node, args) => node
                     .SelectSingleNode(@"//h1")
                     .InnerText,
-                [@"""Код артикула"""] = (node, args) => node
+                [@"""Код артикула"""] = (node, args) => "PLS-" + node
                     .SelectSingleNode(@"//*[@class='catalog-item-fields-table']//tr[1]/td[2]")
                     .InnerText.Trim(),
                 ["Описание"] = (node, args) => node
@@ -38,9 +38,10 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
-            singlePropertiesProduct[@"""Краткое описание"""] =
-                (node, args) => singlePropertiesProduct["Описание"](node, args).Substring(0, 100) + "...";
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args)
+                                          + "-" + singlePropertiesProduct[@"""Код артикула"""](node, args));
+            //singlePropertiesProduct[@"""Краткое описание"""] =
+            //    (node, args) => singlePropertiesProduct["Описание"](node, args).Substring(0, 100) + "...";
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node
@@ -92,7 +93,7 @@ namespace DataParser.ParserExamples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!PolisieToys"}, isCategory: true)
             }.Extend(collection);

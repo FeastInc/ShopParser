@@ -20,7 +20,7 @@ namespace DataParser.Examples
                 ["Наименование"] = (node, args) => node
                     .SelectSingleNode(@"//h1")
                     .InnerText.Replace(badString, String.Empty),
-                [@"""Код артикула"""] = (node, args) => node
+                [@"""Код артикула"""] = (node, args) => "RS-" + node
                     .SelectSingleNode(@".//*[@id='ctl00_MainContent_panTopRight']/div[1]/span")
                     .InnerText,
                 ["Цена"] = (node, args) => Regex.Replace(node
@@ -44,7 +44,9 @@ namespace DataParser.Examples
             };
             singlePropertiesProduct["Заголовок"] = (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args)
+                                          + "-" + singlePropertiesProduct[@"""Код артикула"""](node, args));
+
             var parser = new LiquiMolyClass(
                 isCategory: node => node
                     ._SelectNodes(@"//a[contains(@class, 'rpSelected')]")
@@ -85,7 +87,7 @@ namespace DataParser.Examples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!Rntoys"}, isCategory: true)
             }.Extend(collection);

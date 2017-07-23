@@ -10,6 +10,7 @@ namespace DataParser.ParserExamples
     {
         public static void Parse()
         {
+            var random = new Random();
             var URL = @"http://valda.ru";
             var singlePropertiesProduct = new Dictionary <string, Search<string>>
             {
@@ -18,7 +19,7 @@ namespace DataParser.ParserExamples
                         ?.Attributes["data-price"]?.Value ??
                         node.SelectSingleNode(@"//div[@class='add2cart']/span[3]")
                         .Attributes["data-price"].Value,
-                [@"""Код артикула"""] = (node, args) => node
+                [@"""Код артикула"""] = (node, args) => "VD-" + node
                     .SelectSingleNode(@"//div[@itemprop]/*[contains(@class, 'hint')]")
                     ?.InnerText ?? string.Empty,
                 ["Наименование"] = (node, args) => node
@@ -45,7 +46,7 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args) + "-VD-" + random.Next());
             var parser = new LiquiMolyClass(
                 isCategory: node => node
                     ._SelectNodes(@"//*[@id='product-list']")
@@ -90,7 +91,7 @@ namespace DataParser.ParserExamples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!valda"}, isCategory: true)
             }.Extend(collection);

@@ -21,7 +21,7 @@ namespace DataParser.ParserExamples
                 ["Наименование"] = (node, args) => node
                     .SelectSingleNode(@"//h1/span[@class='bk_name']")
                     .InnerText,
-                [@"""Код артикула"""] = (node, args) => node
+                [@"""Код артикула"""] = (node, args) => "DNT-" + node
                     .SelectSingleNode(@"//td[@valign='middle']/b")
                     .InnerText
                     .Trim(),
@@ -57,7 +57,8 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args) 
+                                       + "-" + singlePropertiesProduct[@"""Код артикула"""](node, args));
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node
@@ -94,7 +95,7 @@ namespace DataParser.ParserExamples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!DynaTone"}, isCategory: true)
             }.Extend(collection);

@@ -12,6 +12,7 @@ namespace DataParser.Examples
     {
         public static void Parse()
         {
+            var random = new Random();
             var mainUrl = @"http://igr.ru/";
             var addedUrl = @"http://igr.ru/cat.php?pgsize=1000&sort=1&pgsort=1&days=9000&rub=207&prub=";
 
@@ -34,7 +35,7 @@ namespace DataParser.Examples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args) + "-SBT-" + random.Next());
             singlePropertiesProduct[@"""Краткое описание"""] =
                 (node, args) => singlePropertiesProduct["Описание"](node, args).Split('.')[0];
             //singlePropertiesProduct[@"""Возраст детей"""] = (node, args) =>
@@ -81,11 +82,11 @@ namespace DataParser.Examples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!IgrRu"}, isCategory: true)
             }.Extend(collection);
-            Import.Write(path: "igrRu.csv",
+            Import.Write(path: @"..\..\..\CSV\igrRu.csv",
                 collection: collection.ToArray(),
                 headers: Constants.WebAsystKeys,
                 format: Constants.WebAsystFormatter);

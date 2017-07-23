@@ -11,6 +11,7 @@ namespace DataParser.ParserExamples
     {
         public static void Parse()
         {
+            var random = new Random();
             var URL = @"http://www.vesna.kirov.ru";
             var suffix = @"?page_count=1000&sort=PROPERTY_IS_AVAILABLE|DESC&PAGEN_1=13";
             var singlePropertiesProduct = new Dictionary<string, Search<string>>
@@ -22,7 +23,7 @@ namespace DataParser.ParserExamples
                 {
                     Thread.Sleep(1000);
                     Console.WriteLine("Delay");
-                    return node
+                    return "VS-" + node
                         .SelectSingleNode(@".//*[@id='content']/div[2]/div/div/div[1]/div[2]/div[2]")
                         ?.InnerText?.Substring(9) ?? string.Empty;
                 },
@@ -43,7 +44,7 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args) + "-VS-" + random.Next());
 
             var parser = new LiquiMolyClass(
                 isCategory: node =>node
@@ -80,7 +81,7 @@ namespace DataParser.ParserExamples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!VesnaKirov"}, isCategory: true)
             }.Extend(collection);

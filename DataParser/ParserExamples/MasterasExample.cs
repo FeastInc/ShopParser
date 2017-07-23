@@ -20,7 +20,7 @@ namespace DataParser.ParserExamples
                 ["Наименование"] = (node, args) => node
                     .SelectSingleNode(@"//*[@id='product-top']/div[2]/h1")
                     .InnerText,
-                [@"""Код артикула"""] = (node, args) => node
+                [@"""Код артикула"""] = (node, args) => "SER-" + node
                     .SelectSingleNode(@"//*[@class='sku']/span")
                     .InnerText
                     .Trim(),
@@ -39,7 +39,8 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args)
+                                          + "-" + singlePropertiesProduct[@"""Код артикула"""](node, args));
 
             var parser = new LiquiMolyClass(
                 isCategory: node => node
@@ -103,14 +104,14 @@ namespace DataParser.ParserExamples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!Masteras"}, isCategory: true)
             }.Extend(collection);
 
-            collection = JoinerArticles.JoinInOrderEnumerable(collection, "Наименование",
-                productFieldsForPluralProp: new[] { "Изображения" },
-                productFieldsForSingleProp: new[] { "Описание" });
+            //collection = JoinerArticles.JoinInOrderEnumerable(collection, "Наименование",
+            //    productFieldsForPluralProp: new[] { "Изображения" },
+            //    productFieldsForSingleProp: new[] { "Описание" });
 
             Import.Write(path: "../../../CSV/masteras.csv",
                collection: collection.ToArray(),

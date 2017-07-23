@@ -20,8 +20,8 @@ namespace DataParser
 
         public IEnumerable<ProductCategoryObject> GetProductCategoryObjects(
             string query,
-            Dictionary<string, Func<MySqlDataReader, string>> singlePropertiesProductFunc,
-            Dictionary<string, Func<MySqlDataReader, string>> singlePropertiesCategoryFunc,
+            Dictionary<string, Func<MySqlDataReader, string>> singlePropertiesProductFunc=null,
+            Dictionary<string, Func<MySqlDataReader, string>> singlePropertiesCategoryFunc=null,
             Dictionary<string, Func<MySqlDataReader, string[]>> pluralPropertiesProductFunc = null,
             Dictionary<string, Func<MySqlDataReader, string[]>> pluralPropertiesCategoryFunc = null)
         {
@@ -35,16 +35,22 @@ namespace DataParser
                 {
                     while (reader.Read())
                     {
-                        yield return new ProductCategoryObject(
-                            singleProperties: singlePropertiesCategoryFunc.ToDictionary(x => x.Key,
-                                x => x.Value(reader)),
-                            pluralProperties: pluralPropertiesCategoryFunc.ToDictionary(x => x.Key,
-                                x => x.Value(reader)));
-                        yield return new ProductCategoryObject(
-                            singleProperties:
-                            singlePropertiesProductFunc.ToDictionary(x => x.Key, x => x.Value(reader)),
-                            pluralProperties: pluralPropertiesProductFunc.ToDictionary(x => x.Key,
-                                x => x.Value(reader)));
+                        if (singlePropertiesCategoryFunc != null)
+                        {
+                            yield return new ProductCategoryObject(
+                                singleProperties: singlePropertiesCategoryFunc.ToDictionary(x => x.Key,
+                                    x => x.Value(reader)),
+                                pluralProperties: pluralPropertiesCategoryFunc.ToDictionary(x => x.Key,
+                                    x => x.Value(reader)));
+                        }
+                        if (singlePropertiesProductFunc != null)
+                        {
+                            yield return new ProductCategoryObject(
+                                singleProperties:
+                                singlePropertiesProductFunc.ToDictionary(x => x.Key, x => x.Value(reader)),
+                                pluralProperties: pluralPropertiesProductFunc.ToDictionary(x => x.Key,
+                                    x => x.Value(reader)));
+                        }
                     }
                 }
             }

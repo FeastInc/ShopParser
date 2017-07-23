@@ -18,7 +18,7 @@ namespace DataParser.ParserExamples
                 ["Наименование"] = (node, args) => node
                     .SelectSingleNode(@"//h1")
                     .InnerText.Trim(),
-                [@"""Код артикула"""] = (node, args) =>node
+                [@"""Код артикула"""] = (node, args) => "GW-" + node
                     .SelectSingleNode(@".//div[@class='clearfix' and count(child::div)=3]/div[2]/b[1]")
                     .InnerText,
                 ["Цена"] = (node, args) => node
@@ -39,7 +39,8 @@ namespace DataParser.ParserExamples
             singlePropertiesProduct["Заголовок"] =
                 (node, args) => singlePropertiesProduct["Наименование"](node, args);
             singlePropertiesProduct[@"""Ссылка на витрину"""] = (node, args) =>
-                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args));
+                Humanization.GetHumanLink(singlePropertiesProduct["Наименование"](node, args)
+                                          + "-" + singlePropertiesProduct[@"""Код артикула"""](node, args));
             //singlePropertiesProduct[@"""Возраст детей"""] = (node, args) =>
             //    Regex.Match(singlePropertiesProduct["Описание"](node, args),
             //        @"Для\s+детей\s+от\s+\d+\s+лет",
@@ -81,7 +82,7 @@ namespace DataParser.ParserExamples
             collection = new[]
             {
                 new ProductCategoryObject(
-                    new Dictionary<string, string> {["Наименование"] = "Temporary"}, isCategory: true),
+                    new Dictionary<string, string> {["Наименование"] = "Temporary2"}, isCategory: true),
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!Gratwest"}, isCategory: true)
             }.Extend(collection);
