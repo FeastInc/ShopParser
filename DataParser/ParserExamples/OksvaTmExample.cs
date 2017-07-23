@@ -19,6 +19,7 @@ namespace DataParser.ParserExamples
                 ["Описание"] = (node, args) => node
                     ?.SelectSingleNode(@".//*[contains(@id, 'node')]//div[@property]")
                     ?.InnerText ?? string.Empty,
+                [@"""Код артикула"""] = (node, args) => "OKS",
                 ["Размеры"] = (node, args) => node
                     ?.SelectSingleNode(@".//*[contains(@id,'node')]/div[1]/div[9]/span[2]")
                     ?.InnerText ?? string.Empty,
@@ -86,7 +87,7 @@ namespace DataParser.ParserExamples
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!Оксва-тм"}, isCategory: true)
             }.Extend(collection);
-            Import.Write(path: "oksvatm.csv",
+            Import.Write(path: @"..\..\..\CSV\oksvatm.csv",
                 collection: collection.ToArray(),
                 headers: Constants.WebAsystKeys,
                 format: Constants.WebAsystFormatter);

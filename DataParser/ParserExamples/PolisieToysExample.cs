@@ -25,6 +25,9 @@ namespace DataParser.ParserExamples
                 [@"""Код артикула"""] = (node, args) => "PLS-" + node
                     .SelectSingleNode(@"//*[@class='catalog-item-fields-table']//tr[1]/td[2]")
                     .InnerText.Trim(),
+                ["Артикул"] = (node, args) => node
+                    .SelectSingleNode(@"//*[@class='catalog-item-fields-table']//tr[1]/td[2]")
+                    .InnerText.Trim(),
                 ["Описание"] = (node, args) => node
                     .SelectSingleNode(@".//*[@id='catalog_item_view_tabs_item_0']")
                     ?.InnerText ?? string.Empty + 
@@ -87,7 +90,7 @@ namespace DataParser.ParserExamples
                collection: parser.GetProductOrCategory(arguments),
                other: PolisieToysDataExtractorExample.Extract(),
                setKeyCollection: o => o.IsCategory ? o.SingleProperties["Наименование"]
-                                                   : o.SingleProperties[@"""Код артикула"""],
+                                                   : o.SingleProperties["Артикул"],
                setKeyOtherCollection: o => o.SingleProperties["Артикул"]);
 
             collection = new[]

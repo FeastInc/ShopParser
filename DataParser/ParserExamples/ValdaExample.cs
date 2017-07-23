@@ -95,7 +95,7 @@ namespace DataParser.ParserExamples
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!valda"}, isCategory: true)
             }.Extend(collection);
-            Import.Write(path: "valda.csv",
+            Import.Write(path: @"..\..\..\CSV\valda.csv",
                 collection: collection.ToArray(),
                 headers: Constants.WebAsystKeys,
                 format: Constants.WebAsystFormatter);

@@ -91,7 +91,7 @@ namespace DataParser.Examples
                 new ProductCategoryObject(
                     new Dictionary<string, string> {["Наименование"] = "!Rntoys"}, isCategory: true)
             }.Extend(collection);
-            Import.Write(path: "rntoys.csv",
+            Import.Write(path: @"..\..\..\CSV\rntoys.csv",
                 collection: collection.ToArray(),
                 headers: Constants.WebAsystKeys,
                 format: Constants.WebAsystFormatter);

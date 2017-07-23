@@ -19,7 +19,7 @@ namespace DataParser.DataExtractorExamples
                 singlePropertiesFunc: new Dictionary<string, Func<Range[], string>>
                 {
                     ["Наименование"] = row => row[3]._Value2(),
-                    [@"""Код артикула"""] = row => row[1]._Value2(),
+                    [@"""Код артикула"""] = row => "SBT-" + row[1]._Value2(),
                     ["Видеоролик"] = row => row[13]._Hyperlink(1),
                     ["Цена"] = row => row[8]._Value2(),
                     ["Код"] = row => row[0]._Value2()

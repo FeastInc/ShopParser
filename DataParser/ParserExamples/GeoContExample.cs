@@ -29,6 +29,7 @@ namespace DataParser.ParserExamples
                         .InnerText, @"\s+", string.Empty);
                     return a.Substring(0, a.Length - 7).Replace(" ", "");
                 },
+                [@"""Код артикула"""] = (node, args) => "GEK",
                 //[@"""Возраст детей"""] = (node, args) => {
                 //    var a = Regex.Replace(node
                 //        .SelectSingleNode(@"//*[@class='prodCard'][2]/p[2]")

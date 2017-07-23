@@ -11,7 +11,7 @@ namespace DataParser.DataExtractorExamples
         public static IEnumerable<ProductCategoryObject> Extract()
         {
             return DataExtractor.Extract(
-                path: @"D:\ShopParser\CSV\polisie.xlsx",
+                path: @"D:\GitHub\ShopParser\CSV\polisie.xlsx",
                 filter: row => row[0]._Value2() != null,
                 pagesToExtact: new HashSet<int> { 2 },
                 singlePropertiesFunc: new Dictionary<string, Func<Range[], string>>
